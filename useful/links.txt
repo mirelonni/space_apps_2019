@@ -1,0 +1,8 @@
+Challange page = https://2019.spaceappschallenge.org/challenges/stars/orbital-scrap-metal-the-video-game/details
+Space debris = http://stuffin.space/
+Statting point NASA World Wind = https://worldwind.arc.nasa.gov/web/get-started/
+Phaser.io = https://phaser.io/
+Phaser.io DOCS = https://photonstorm.github.io/phaser3-docs/index.html
+NORAD TLEs = https://www.celestrak.com/NORAD/elements/
+Space-Trak TLEs (requires account) = https://www.space-track.org/
+Two Line Element WIKI = https://en.wikipedia.org/wiki/Two-line_element_set
