@@ -26,6 +26,7 @@ var config = {
 var ship;
 var cursor;
 var text;
+var score = 0;
 
 var x_speed = 0;
 var y_speed = 0;
@@ -84,7 +85,7 @@ function create() {
 
     this.physics.add.overlap(ship, debris, collectGarbage, null, this);
 
-    // text = this.add.text(10, 10, '', { font: '16px Courier', fill: '#00ff00' });
+    text = this.add.text(10, 10, '', { font: '16px Courier', fill: '#00ff00' });
 }
 
 function update() {
@@ -111,6 +112,8 @@ function update() {
         // logo.setVelocity(0, 0);
     }
 
+    ship.setCollideWorldBounds(true);
+
 
 
     // for (deb in debris) {
@@ -119,9 +122,9 @@ function update() {
     //     }
     // }
 
-    // text.setText('FUCK JAVASCRIPT!: ' + ship.body.speed);
+    text.setText('Score: ' + score);
 
-    this.physics.world.wrap(ship, 0);
+    //this.physics.world.wrap(ship, 0);
 
 
     //giving the debris a angularvelocity
@@ -134,6 +137,7 @@ function update() {
 
 function collectGarbage(ship, deb) {
     deb.disableBody(true, true);
+    score = score + 1;
     // console.log("1")
 
 
