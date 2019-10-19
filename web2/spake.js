@@ -1,8 +1,11 @@
+var height = 900;
+var width = 1200;
+
 var config = {
     type: Phaser.AUTO,
     // parent: 'phaser-example',
-    width: 800,
-    height: 600,
+    width: this.width,
+    height: this.height,
     physics: {
         default: "arcade",
         arcade: {
@@ -18,13 +21,15 @@ var config = {
     }
 };
 
+
+
 var ship;
 var cursor;
 var text;
 
 var x_speed = 0;
 var y_speed = 0;
-var accelerate = 1;
+var accelerate = 5;
 
 
 var game = new Phaser.Game(config);
@@ -52,7 +57,7 @@ function create() {
     // this.add.image(400, 300, 'spake');
 
     //create the ship sprite from image.
-    ship = this.physics.add.image(400, 300, 'ship');
+    ship = this.physics.add.image(width / 2, height / 2, 'ship');
     ship.setDamping(false);
     // ship.setDrag(0.9);
     ship.setScale(0.25);
@@ -65,14 +70,14 @@ function create() {
     //     setXY: { x: 100, y: 100 }
     // });
 
-    debris = this.physics.add.group();
-    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'antenna').setScale(0.2);
-    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'dish').setScale(0.2);
-    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'solar1').setScale(0.2);
-    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'solar2').setScale(0.2);
-    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'pipe').setScale(0.2);
-    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'nut').setScale(0.2);
-    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'screw').setScale(0.2);
+    debris = this.physics.add.group({ angularVelocity: 20 });
+    debris.create(Math.random() * (width - 100), Math.random() * (height - 100), 'antenna').setScale(0.2);
+    debris.create(Math.random() * (width - 100), Math.random() * (height - 100), 'dish').setScale(0.2);
+    debris.create(Math.random() * (width - 100), Math.random() * (height - 100), 'solar1').setScale(0.2);
+    debris.create(Math.random() * (width - 100), Math.random() * (height - 100), 'solar2').setScale(0.2);
+    debris.create(Math.random() * (width - 100), Math.random() * (height - 100), 'pipe').setScale(0.2);
+    debris.create(Math.random() * (width - 100), Math.random() * (height - 100), 'nut').setScale(0.2);
+    debris.create(Math.random() * (width - 100), Math.random() * (height - 100), 'screw').setScale(0.2);
 
 
     cursor = this.input.keyboard.createCursorKeys();
@@ -129,5 +134,8 @@ function update() {
 
 function collectGarbage(ship, deb) {
     deb.disableBody(true, true);
-    console.log("1")
+    // console.log("1")
+
+
+
 }
