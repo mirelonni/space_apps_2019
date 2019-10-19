@@ -35,7 +35,7 @@ function create() {
     var particles = this.add.particles('blue');
 
     logo = this.physics.add.image(400, 300, 'spake');
-    //logo = this.add.sprite(400, 200, 'spake');
+    logo = this.add.sprite(400, 200, 'spake');
     logo.setScale(0.25);
 
     logo.setVelocity(0, 0);
