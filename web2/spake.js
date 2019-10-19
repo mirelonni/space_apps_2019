@@ -30,7 +30,7 @@ function preload() {
 }
 
 function create() {
-    this.add.image(400, 300, 'sky');
+    this.add.image(400, 300, 'spake');
 
     var particles = this.add.particles('blue');
 
@@ -38,9 +38,9 @@ function create() {
     logo = this.add.sprite(400, 200, 'spake');
     logo.setScale(0.25);
 
-    logo.setVelocity(0, 0);
-    logo.setBounce(0.2);
-    logo.setCollideWorldBounds(true);
+    //logo.setVelocity(0, 0);
+    //logo.setBounce(0.2);
+    //logo.setCollideWorldBounds(true);
 
     //emitter.startFollow(logo);
 
@@ -62,6 +62,6 @@ function update() {
         logo.setVelocityX(160);
     }
     else {
-        logo.setVelocity(0, 0);
+        //logo.setVelocity(0, 0);
     }
 }
