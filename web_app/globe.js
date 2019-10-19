@@ -1,4 +1,4 @@
-var wwd = new WorldWind.WorldWindow("canvasOne");
+var wwd = new WorldWind.WorldWindow('canvasOne');
 
 wwd.addLayer(new WorldWind.BMNGLayer());
 // wwd.addLayer(new WorldWind.BMNGLandsatLayer());
