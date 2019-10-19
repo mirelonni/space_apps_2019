@@ -65,11 +65,6 @@ function create() {
 
     //create the debris group
 
-    // debris = this.physics.add.group({
-    //     key: 'deb',
-    //     setXY: { x: 100, y: 100 }
-    // });
-
     debris = this.physics.add.group({ angularVelocity: 20 });
     debris.create(Math.random() * (width - 100), Math.random() * (height - 100), 'antenna').setScale(0.2);
     debris.create(Math.random() * (width - 100), Math.random() * (height - 100), 'dish').setScale(0.2);
@@ -85,25 +80,50 @@ function create() {
     this.physics.add.overlap(ship, debris, collectGarbage, null, this);
 
     // text = this.add.text(10, 10, '', { font: '16px Courier', fill: '#00ff00' });
+
+    debris = this.physics.add.group()
+
+
+    // this.physics.add.collider(ship, platforms);
 }
 
 function update() {
 
     if (cursor.up.isDown) {
 
+
+        if (y_speed > 0) {
+            y_speed = 0;
+        }
+
         y_speed -= accelerate
         ship.setVelocity(x_speed, y_speed);
         //logo.angle(-160);
     }
     else if (cursor.down.isDown) {
+
+        if (y_speed < 0) {
+            y_speed = 0;
+        }
+
         y_speed += accelerate
         ship.setVelocity(x_speed, y_speed);
     }
     else if (cursor.left.isDown) {
+
+        if (x_speed > 0) {
+            x_speed = 0;
+        }
+
         x_speed -= accelerate
         ship.setVelocity(x_speed, y_speed);
     }
     else if (cursor.right.isDown) {
+
+        if (x_speed < 0) {
+            x_speed = 0;
+        }
+
         x_speed += accelerate
         ship.setVelocity(x_speed, y_speed);
     }
