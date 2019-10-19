@@ -13,15 +13,10 @@ var config = {
         preload: preload,
         create: create
     }
-    // ,
-    // canvas: 'phaserCanvas'
-    // renderType: Phaser.CANVAS,
-    // parent: 'canvasOne'
 
 };
 
 var game = new Phaser.Game(config);
-// var game = new Phaser.Game(1000, 500, Phaser.AUTO, 'cnv1', { preload: preload, create: create }, { default: 'arcade', arcade: { gravity: { y: 200 } } })
 
 
 
@@ -46,22 +41,11 @@ function create() {
 
     var logo = this.physics.add.image(400, 100, 'logo');
 
-    logo.setVelocity(300, 500);
+    //logo.setVelocity(300, 500);
     logo.setBounce(1, 1);
     logo.setCollideWorldBounds(true);
 
     emitter.startFollow(logo);
 
-    // this.game.canvas.id = 'blah';
-
-    console.log(game.canvas)
-
-    // var wwd = new WorldWind.WorldWindow('canvasOne');
-    // wwd.addLayer(new WorldWind.BMNGLayer());
-    // // wwd.addLayer(new WorldWind.BMNGLandsatLayer());
-    // wwd.addLayer(new WorldWind.AtmosphereLayer());
-
-
-
-
+    console.log(game.canvas);
 }
