@@ -27,6 +27,11 @@ var ship;
 var cursor;
 var text;
 var score = 0;
+var x_text;
+var y_text;
+var collectedDebris = [];
+var tailx;
+var taily;
 
 var x_speed = 0;
 var y_speed = 0;
@@ -62,14 +67,9 @@ function create() {
     ship.setDamping(false);
     // ship.setDrag(0.9);
     ship.setScale(0.25);
-    ship.setMaxVelocity(50);
+    ship.setMaxVelocity(500);
 
     //create the debris group
-
-    // debris = this.physics.add.group({
-    //     key: 'deb',
-    //     setXY: { x: 100, y: 100 }
-    // });
 
     debris = this.physics.add.group({ angularVelocity: 20 });
     debris.create(Math.random() * (width - 100), Math.random() * (height - 100), 'antenna').setScale(0.2);
@@ -86,25 +86,49 @@ function create() {
     this.physics.add.overlap(ship, debris, collectGarbage, null, this);
 
     text = this.add.text(10, 10, '', { font: '16px Courier', fill: '#00ff00' });
+    x_text = this.add.text(10, 40, '', { font: '16px Courier', fill: '#00ff00' });
+    y_text = this.add.text(10, 70, '', { font: '16px Courier', fill: '#00ff00' });
+    tailx = ship.body.x;
+    taily = ship.body.y;
+
+    debris = this.physics.add.group()
 }
 
 function update() {
 
     if (cursor.up.isDown) {
+        if (y_speed > 0) {
+            y_speed = 0;
+        }
 
         y_speed -= accelerate
         ship.setVelocity(x_speed, y_speed);
         //logo.angle(-160);
     }
     else if (cursor.down.isDown) {
+
+        if (y_speed < 0) {
+            y_speed = 0;
+        }
+
         y_speed += accelerate
         ship.setVelocity(x_speed, y_speed);
     }
     else if (cursor.left.isDown) {
+
+        if (x_speed > 0) {
+            x_speed = 0;
+        }
+
         x_speed -= accelerate
         ship.setVelocity(x_speed, y_speed);
     }
     else if (cursor.right.isDown) {
+
+        if (x_speed < 0) {
+            x_speed = 0;
+        }
+
         x_speed += accelerate
         ship.setVelocity(x_speed, y_speed);
     }
@@ -113,32 +137,21 @@ function update() {
     }
 
     ship.setCollideWorldBounds(true);
-
-
-
-    // for (deb in debris) {
-    //     if (this.intersects(ship, deb)) {
-    //         console.log(deb)
-    //     }
-    // }
+    for(var i = 0; i < collectedDebris.length; i++){
+        debri = collectedDebris[i];
+        this.physics.moveToObject(debri, ship, 200);
+    }
 
     text.setText('Score: ' + score);
-
-    //this.physics.world.wrap(ship, 0);
-
-
-    //giving the debris a angularvelocity
-
-    // console.log("1")
-
-
 }
 
 
 function collectGarbage(ship, deb) {
-    deb.disableBody(true, true);
-    score = score + 1;
-    // console.log("1")
+    if(!collectedDebris.includes(deb)){
+        collectedDebris.push(deb);
+        deb.setCollideWorldBounds(true);
+        score = score + 1;
+    }
 
 
 
