@@ -1,10 +1,12 @@
 var config = {
     type: Phaser.AUTO,
+    parent: 'phaser-example',
     width: 800,
     height: 600,
     physics: {
-        default: 'arcade',
+        default: "arcade",
         arcade: {
+            fps: 60,
             gravity: { y: 0 },
             debug: true
         }
@@ -16,52 +18,76 @@ var config = {
     }
 };
 
+var ship;
+var cursors;
+var text;
+
+
 var game = new Phaser.Game(config);
-var cursor;
-var logo;
-var sprite;
 
 function preload() {
-    this.load.image('spake', 'assets/spake.png');
-    this.load.image('sky', 'assets/sky.png');
-    this.load.image('ground', 'assets/platform.png');
-    this.load.image('blue', 'assets/spake.png');
+    this.load.image('bullet', 'assets/spake.png');
+    this.load.image('ship', 'assets/spake.png');
 
+    //preloading debris intro the image cache
+    this.load.image('antenna', 'assets/Spake_Antenna-01.png');
+    this.load.image('dish', 'assets/Spake_Dish-01.png');
+    this.load.image('solar1', 'assets/Spake_PanouSolar1-01.png');
+    this.load.image('solar2', 'assets/Spake_PanouSolar2-01.png');
+    this.load.image('pipe', 'assets/Spake_Pipe-01.png');
+    this.load.image('nut', 'assets/Spake_Piulita-01.png');
+    this.load.image('screw', 'assets/Spake_Surub-01.png');
 }
 
 function create() {
-    this.add.image(400, 300, 'sky');
 
-    var particles = this.add.particles('blue');
+    //create the ship sprite from image.
+    ship = this.physics.add.image(400, 300, 'ship');
+    ship.setDamping(false);
+    ship.setDrag(0.9);
+    ship.setScale(0.25);
+    ship.setMaxVelocity(50);
 
-    logo = this.physics.add.image(400, 300, 'spake');
-    logo = this.add.sprite(400, 200, 'spake');
-    logo.setScale(0.25);
+    //create the debris group
 
-    logo.setVelocity(0, 0);
-    logo.setBounce(0.2);
-    logo.setCollideWorldBounds(true);
+    debris = this.add.group();
+    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'antenna').setScale(0.2);
+    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'dish').setScale(0.2);
+    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'solar1').setScale(0.2);
+    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'solar2').setScale(0.2);
+    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'pipe').setScale(0.2);
+    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'nut').setScale(0.2);
+    debris.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'screw').setScale(0.2);
 
-    //emitter.startFollow(logo);
+    cursors = this.input.keyboard.createCursorKeys();
 
-    cursor = this.input.keyboard.createCursorKeys();
+    text = this.add.text(10, 10, '', { font: '16px Courier', fill: '#00ff00' });
 }
 
 function update() {
-    if (cursor.up.isDown) {
-        logo.setVelocityY(-160);
-        //logo.angle(-160);
-    }
-    else if (cursor.down.isDown) {
-        logo.setVelocityY(160);
-    }
-    else if (cursor.left.isDown) {
-        logo.setVelocityX(-160);
-    }
-    else if (cursor.right.isDown) {
-        logo.setVelocityX(160);
+    if (cursors.up.isDown) {
+        this.physics.velocityFromRotation(ship.rotation, 20, ship.body.acceleration);
     }
     else {
-        logo.setVelocity(0, 0);
+        ship.setAcceleration(0);
     }
+
+    if (cursors.left.isDown) {
+        ship.setAngularVelocity(-30);
+    }
+    else if (cursors.right.isDown) {
+        ship.setAngularVelocity(30);
+    }
+    else if (cursors.down.isDown) {
+        ship.setAngularVelocity(0);
+    }
+
+    text.setText('FUCK JAVASCRIPT!: ' + ship.body.speed);
+
+    this.physics.world.wrap(ship, 0);
+
+
+    //giving the debris a angularvelocity
+
+
 }
