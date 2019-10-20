@@ -7,4 +7,4 @@ The team repository for the 2019 NASA Space Apps - Bucharest
 
 3. Collect as much space junk as you can with the space fuel.
 
-4. Check out the percentage of debris collected from the Iridiun Cosmos colision.
+4. Check out the percentage of debris collected from the Iridium Cosmos colision.
