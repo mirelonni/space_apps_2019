@@ -25,17 +25,16 @@ var config = {
 
 var ship;
 var cursor;
-var text;
+var score_text;
+var debug_text;
 var score = 0;
-var x_text;
-var y_text;
 var collectedDebris = [];
-var tailx;
-var taily;
 
 var x_speed = 0;
 var y_speed = 0;
 var accelerate = 5;
+var fuel = 5;
+var fuel_images = [];
 
 
 var game = new Phaser.Game(config);
@@ -44,7 +43,6 @@ function preload() {
 
     // this.load.setBaseURL('http://127.0.0.1:8080/')
 
-    // this.load.image('bullet', 'assets/spake.png');
     this.load.image('ship', 'assets/Spake_Satelit-01.png');
 
     //preloading debris intro the image cache
@@ -55,13 +53,10 @@ function preload() {
     this.load.image('pipe', 'assets/Spake_Pipe-01.png');
     this.load.image('nut', 'assets/Spake_Piulita-01.png');
     this.load.image('screw', 'assets/Spake_Surub-01.png');
-    // this.load.image('deb', 'assets/Spake_Surub-01.png');
+    this.load.image('fuel', 'assets/Spake_Fuel-01.png');
 }
 
 function create() {
-
-    // this.add.image(400, 300, 'spake');
-
     //create the ship sprite from image.
     ship = this.physics.add.image(width / 2, height / 2, 'ship');
     ship.setDamping(false);
@@ -85,16 +80,19 @@ function create() {
 
     this.physics.add.overlap(ship, debris, collectGarbage, null, this);
 
-    text = this.add.text(10, 10, '', { font: '16px Courier', fill: '#00ff00' });
-    x_text = this.add.text(10, 40, '', { font: '16px Courier', fill: '#00ff00' });
-    y_text = this.add.text(10, 70, '', { font: '16px Courier', fill: '#00ff00' });
-    tailx = ship.body.x;
-    taily = ship.body.y;
+    score_text = this.add.text(10, 10, '', { font: '16px Courier', fill: '#00ff00' });
+    debug_text = this.add.text(10, 50, '', { font: '16px Courier', fill: '#00ff00' });
 
     debris = this.physics.add.group()
+
+    for(var i = 0; i < fuel; i++){
+        img = this.add.image(940 + 50*i, 50, 'fuel').setScale(0.2);
+        fuel_images.push(img);
+    }
+    timedEvent = this.time.addEvent({ delay: 3000, callback: consumeFuel, callbackScope: this, loop: true });
 }
 
-function update() {
+function update(time) {
 
     if (cursor.up.isDown) {
         if (y_speed > 0) {
@@ -142,7 +140,7 @@ function update() {
         this.physics.moveToObject(debri, ship, 200);
     }
 
-    text.setText('Score: ' + score);
+    score_text.setText('Score: ' + score);
 }
 
 
@@ -152,7 +150,16 @@ function collectGarbage(ship, deb) {
         deb.setCollideWorldBounds(true);
         score = score + 1;
     }
+}
 
+function consumeFuel(){
+    if(fuel > 0){
+        fuel = fuel - 1;
+        fuel_images[fuel].setVisible(false);
+    }
 
-
+    if(fuel == 0){
+        this.scene.pause();
+        alert("You have collected " + score + " debris!");
+    }
 }
