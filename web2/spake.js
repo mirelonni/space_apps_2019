@@ -1,5 +1,5 @@
 var height = 900;
-var width = 1200;
+var width = 1160;
 
 var config = {
     type: Phaser.AUTO,
@@ -29,6 +29,7 @@ var score_text;
 var debug_text;
 var score = 0;
 var collectedDebris = [];
+var totalDebris = 1325;
 
 var x_speed = 0;
 var y_speed = 0;
@@ -54,10 +55,13 @@ function preload() {
     this.load.image('nut', 'assets/Spake_Piulita-01.png');
     this.load.image('screw', 'assets/Spake_Surub-01.png');
     this.load.image('fuel', 'assets/Spake_Fuel-01.png');
+
+    this.load.image('europe', 'assets/europe.jpg');
 }
 
 function create() {
     //create the ship sprite from image.
+    this.add.image(0, 0, 'europe').setOrigin(0,0).setAlpha(0.5);
     ship = this.physics.add.image(width / 2, height / 2, 'ship');
     ship.setDamping(false);
     // ship.setDrag(0.9);
@@ -86,7 +90,7 @@ function create() {
     debris = this.physics.add.group()
 
     for(var i = 0; i < fuel; i++){
-        img = this.add.image(940 + 50*i, 50, 'fuel').setScale(0.2);
+        img = this.add.image(900 + 50*i, 50, 'fuel').setScale(0.2);
         fuel_images.push(img);
     }
     timedEvent = this.time.addEvent({ delay: 3000, callback: consumeFuel, callbackScope: this, loop: true });
@@ -160,6 +164,7 @@ function consumeFuel(){
 
     if(fuel == 0){
         this.scene.pause();
-        alert("You have collected " + score + " debris!");
+        percentage = score / 13.25;
+        alert("You have collected " + percentage.toString().substring(0,4) + " % of all the debris caused by Iridium & Cosmos collision!");
     }
 }
