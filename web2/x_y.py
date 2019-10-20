@@ -26,7 +26,7 @@ poi.append((90, 0, 20))  # north pole
 def get_coords(lat_in, long_in, margins, height, width, out_file):
 
     fp = open('tle.txt', 'r')
-    wr = open(out_file, 'a')
+    wr = open("assets/" + out_file, 'a')
     now = datetime.utcnow()
 
 # now = datetime(2019, 10, 19, 12, 0)
@@ -77,10 +77,10 @@ def get_coords(lat_in, long_in, margins, height, width, out_file):
 regions = ["namerica.txt", "samerica.txt", "africa.txt", "pacific.txt", "atlantic.txt",
            "europa.txt", "asia.txt", "indian.txt", "antarctica.txt", "npole.txt"]
 
-i = 0
-for p in poi:
-    get_coords(p[0], p[1], p[2], 900, 1200, regions[i])
-    i += 1
+# i = 0
+# for p in poi:
+#     get_coords(p[0], p[1], p[2], 900, 1200, regions[i])
+#     i += 1
 
 with socketserver.TCPServer(("", PORT), Handler) as httpd:
     print("serving at port", PORT)

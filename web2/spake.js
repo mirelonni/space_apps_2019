@@ -3,7 +3,6 @@ var width = 1160;
 
 var config = {
     type: Phaser.AUTO,
-    // parent: 'phaser-example',
     width: this.width,
     height: this.height,
     physics: {
@@ -11,7 +10,7 @@ var config = {
         arcade: {
             fps: 60,
             gravity: { y: 0 },
-            debug: true
+            debug: false
         }
     },
     scene: {
@@ -20,8 +19,6 @@ var config = {
         update: update
     }
 };
-
-
 
 var ship;
 var cursor;
@@ -35,14 +32,13 @@ var x_speed = 0;
 var y_speed = 0;
 var accelerate = 5;
 var fuel = 5;
+var give_fuel = 1;
 var fuel_images = [];
 
 
 var game = new Phaser.Game(config);
 
 function preload() {
-
-    // this.load.setBaseURL('http://127.0.0.1:8080/')
 
     this.load.image('ship', 'assets/Spake_Satelit-01.png');
 
@@ -57,11 +53,16 @@ function preload() {
     this.load.image('fuel', 'assets/Spake_Fuel-01.png');
 
     this.load.image('europe', 'assets/europe.jpg');
+
 }
+
+var debris_png = ['antenna', 'dish', 'solar1', 'solar2', 'pipe', 'nut', 'screw']
+
+
 
 function create() {
     //create the ship sprite from image.
-    this.add.image(0, 0, 'europe').setOrigin(0,0).setAlpha(0.5);
+    this.add.image(0, 0, 'europe').setOrigin(0, 0).setAlpha(0.5);
     ship = this.physics.add.image(width / 2, height / 2, 'ship');
     ship.setDamping(false);
     // ship.setDrag(0.9);
@@ -79,7 +80,6 @@ function create() {
     debris.create(Math.random() * (width - 100), Math.random() * (height - 100), 'nut').setScale(0.2);
     debris.create(Math.random() * (width - 100), Math.random() * (height - 100), 'screw').setScale(0.2);
 
-
     cursor = this.input.keyboard.createCursorKeys();
 
     this.physics.add.overlap(ship, debris, collectGarbage, null, this);
@@ -87,10 +87,8 @@ function create() {
     score_text = this.add.text(10, 10, '', { font: '16px Courier', fill: '#00ff00' });
     debug_text = this.add.text(10, 50, '', { font: '16px Courier', fill: '#00ff00' });
 
-    debris = this.physics.add.group()
-
-    for(var i = 0; i < fuel; i++){
-        img = this.add.image(900 + 50*i, 50, 'fuel').setScale(0.2);
+    for (var i = 0; i < fuel; i++) {
+        img = this.add.image(900 + 50 * i, 50, 'fuel').setScale(0.2);
         fuel_images.push(img);
     }
     timedEvent = this.time.addEvent({ delay: 3000, callback: consumeFuel, callbackScope: this, loop: true });
@@ -139,7 +137,7 @@ function update(time) {
     }
 
     ship.setCollideWorldBounds(true);
-    for(var i = 0; i < collectedDebris.length; i++){
+    for (var i = 0; i < collectedDebris.length; i++) {
         debri = collectedDebris[i];
         this.physics.moveToObject(debri, ship, 200);
     }
@@ -149,22 +147,33 @@ function update(time) {
 
 
 function collectGarbage(ship, deb) {
-    if(!collectedDebris.includes(deb)){
+    if (!collectedDebris.includes(deb)) {
         collectedDebris.push(deb);
         deb.setCollideWorldBounds(true);
         score = score + 1;
+
+        if (score / 5 == give_fuel) {
+            give_fuel += 1;
+            fuel_images[fuel].setVisible(true);
+            fuel += 1;
+        }
+
+        var item = debris_png[Math.floor(Math.random() * debris_png.length)];
+        debris.create(Math.random() * (width - 100), Math.random() * (height - 100), item).setScale(0.2);
+        this.physics.add.overlap(ship, debris, collectGarbage, null, this);
+
     }
 }
 
-function consumeFuel(){
-    if(fuel > 0){
+function consumeFuel() {
+    if (fuel > 0) {
         fuel = fuel - 1;
         fuel_images[fuel].setVisible(false);
     }
 
-    if(fuel == 0){
+    if (fuel == 0) {
         this.scene.pause();
         percentage = score / 13.25;
-        alert("You have collected " + percentage.toString().substring(0,4) + " % of all the debris caused by Iridium & Cosmos collision!");
+        alert("You have collected " + percentage.toString().substring(0, 4) + " % of all the debris caused by Iridium & Cosmos collision!");
     }
 }
